@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="description" content="Laboratório virtual 3D de controle de acesso com suporte a WebXR." />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <title>Simulador de Controle de Acesso</title>
+    <script type="module" crossorigin src="/simulador-controle-acesso-publicado/assets/index-8MafkwZb.js"></script>
+    <link rel="stylesheet" crossorigin href="/simulador-controle-acesso-publicado/assets/index-BLKYiMej.css">
+  </head>
+  <body>
+    <canvas id="renderCanvas" aria-label="Ambiente 3D da portaria"></canvas>
+
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">MISSÃO 01</span>
+        <h1>Portaria de pedestres</h1>
+      </div>
+      <div class="mission">
+        <span>Objetivo</span>
+        <strong>Configure a portaria e libere a área externa</strong>
+      </div>
+      <div class="score">
+        <span>Pontuação</span>
+        <strong id="score">0</strong>
+      </div>
+    </header>
+
+    <aside class="catalog">
+      <span class="eyebrow">EQUIPAMENTOS</span>
+      <h2>Catálogo</h2>
+      <button class="equipment" data-equipment="rfid">▣ <span>Leitor RFID</span></button>
+      <button class="equipment" data-equipment="lock">⌁ <span>Fechadura</span></button>
+      <button class="equipment" data-equipment="sensor">◉ <span>Sensor de porta</span></button>
+      <button class="equipment" data-equipment="controller">▤ <span>Controladora</span></button>
+      <button class="equipment" data-equipment="turnstileA">↻ <span>Catraca 01</span></button>
+      <button class="equipment" data-equipment="turnstileB">↻ <span>Catraca 02</span></button>
+      <button class="equipment" data-equipment="turnstileController">▤ <span>Controladora de catracas</span></button>
+
+      <div class="counter">
+        <span>Total instalado</span>
+        <strong id="installedCount">0/7</strong>
+      </div>
+
+      <div id="selectionActions" class="selection-actions" hidden>
+        <span id="selectedName">Equipamento selecionado</span>
+        <button id="moveSelected">Mover</button>
+        <button id="removeSelected" class="danger">Remover</button>
+      </div>
+
+      <p class="tip">Depois da primeira porta, instale as duas catracas e sua controladora diante da área externa. Clique em um dispositivo para configurá-lo.</p>
+    </aside>
+
+    <section id="deviceConfig" class="device-config" hidden aria-labelledby="configTitle">
+      <div class="config-heading">
+        <div>
+          <span class="eyebrow">CONFIGURAÇÃO</span>
+          <h2 id="configTitle">Dispositivo</h2>
+        </div>
+        <button id="closeConfig" class="icon-button" aria-label="Fechar configurações">×</button>
+      </div>
+      <label>Nome do dispositivo<input id="configName" maxlength="32" /></label>
+      <label>Endereço de rede<input id="configAddress" placeholder="192.168.10.10" /></label>
+      <label>Modo de operação
+        <select id="configMode">
+          <option value="entry">Entrada</option>
+          <option value="exit">Saída</option>
+          <option value="bidirectional">Bidirecional</option>
+          <option value="secure">Acesso seguro</option>
+        </select>
+      </label>
+      <label class="config-check"><input id="configEnabled" type="checkbox" /> Dispositivo habilitado</label>
+      <fieldset id="controllerSettings" class="config-group" hidden>
+        <legend>Cartões autorizados</legend>
+        <p>Cadastre as cores que poderão liberar este acesso.</p>
+        <div class="color-options">
+          <label class="color-option blue"><input type="checkbox" name="authorizedColor" value="blue" /> Azul</label>
+          <label class="color-option yellow"><input type="checkbox" name="authorizedColor" value="yellow" /> Amarelo</label>
+          <label class="color-option red"><input type="checkbox" name="authorizedColor" value="red" /> Vermelho</label>
+          <label class="color-option green"><input type="checkbox" name="authorizedColor" value="green" /> Verde</label>
+        </div>
+        <label class="config-check"><input id="configAlarmEnabled" type="checkbox" /> Ativar alarme em acessos negados</label>
+      </fieldset>
+      <fieldset id="credentialTest" class="config-group" hidden>
+        <legend>Simular credencial</legend>
+        <label>Cartão apresentado
+          <select id="testCardColor">
+            <option value="blue">Cartão azul</option>
+            <option value="yellow">Cartão amarelo</option>
+            <option value="red">Cartão vermelho</option>
+            <option value="green">Cartão verde</option>
+          </select>
+        </label>
+        <button id="presentCard" class="present-card" type="button">Apresentar cartão</button>
+      </fieldset>
+      <div class="config-state"><span>Estado</span><strong id="configState">Não configurado</strong></div>
+      <button id="saveConfig" class="save-config">Salvar configuração</button>
+    </section>
+
+    <div id="alarmBanner" class="alarm-banner" hidden role="alert">
+      <strong>ALARME DE ACESSO</strong>
+      <span id="alarmMessage">Credencial não autorizada</span>
+      <button id="silenceAlarm">Silenciar</button>
+    </div>
+
+    <section class="instructions">
+      <strong id="status">Modo de exploração</strong>
+      <span id="help">WASD para andar · mouse para olhar · clique no cenário para controlar</span>
+    </section>
+
+    <nav class="actions" aria-label="Ações da simulação">
+      <button id="explore" class="secondary active">Explorar</button>
+      <button id="connect" class="secondary">Conectar</button>
+      <button id="doorControl" class="secondary" disabled>Fechar porta</button>
+      <button id="turnstileControl" class="secondary" disabled>Bloquear catracas</button>
+      <button id="test">Verificar sistema</button>
+      <button id="enterVr" class="secondary" hidden>Entrar em VR</button>
+      <button id="installPwa" class="secondary" hidden>Instalar aplicativo</button>
+      <button id="resetActivity" class="danger-action">Reiniciar atividade</button>
+    </nav>
+
+    <aside class="comfort" aria-label="Conforto em realidade virtual">
+      <label><input id="smoothMovement" type="checkbox" /> Movimento suave em VR</label>
+      <small>Teletransporte é o modo padrão.</small>
+    </aside>
+
+    <div class="crosshair" aria-hidden="true">+</div>
+  </body>
+</html>

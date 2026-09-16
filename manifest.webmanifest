@@ -1,0 +1,14 @@
+{
+  "name": "Simulador de Controle de Acesso",
+  "short_name": "Controle de Acesso",
+  "description": "Laboratório virtual 3D para treinamento de controle de acesso.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#08111f",
+  "theme_color": "#08111f",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
