@@ -9,8 +9,8 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
     <title>Simulador de Controle de Acesso</title>
-    <script type="module" crossorigin src="/simulador-controle-acesso-publicado/assets/index-RXtt1UTJ.js"></script>
-    <link rel="stylesheet" crossorigin href="/simulador-controle-acesso-publicado/assets/index-BLKYiMej.css">
+    <script type="module" crossorigin src="/simulador-controle-acesso-publicado/assets/index-BX_Ml3wa.js"></script>
+    <link rel="stylesheet" crossorigin href="/simulador-controle-acesso-publicado/assets/index-C4FjLpYv.css">
   </head>
   <body>
     <canvas id="renderCanvas" aria-label="Ambiente 3D da portaria"></canvas>
@@ -126,6 +126,13 @@
     <aside class="comfort" aria-label="Conforto em realidade virtual">
       <label><input id="smoothMovement" type="checkbox" /> Movimento suave em VR</label>
       <small>Teletransporte é o modo padrão.</small>
+      <details>
+        <summary>Ajustar ao espaço real</summary>
+        <label>Largura frontal (m)<input id="realWidth" type="number" min="1.8" max="3" step="0.01" value="2.20" /></label>
+        <label>Profundidade (m)<input id="realDepth" type="number" min="5" max="9" step="0.01" value="7.00" /></label>
+        <button id="calibrateSpace" type="button">Aplicar calibração</button>
+        <small>Meça a área livre e ajuste antes de entrar em VR.</small>
+      </details>
     </aside>
 
     <div class="crosshair" aria-hidden="true">+</div>

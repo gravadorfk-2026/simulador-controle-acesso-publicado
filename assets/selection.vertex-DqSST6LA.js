@@ -1,4 +1,4 @@
-import{S as i}from"./index-RXtt1UTJ.js";const e="selectionVertexShader",t=`attribute vec3 position;
+import{S as i}from"./index-BX_Ml3wa.js";const e="selectionVertexShader",t=`attribute vec3 position;
 #ifdef INSTANCES
 attribute float instanceSelectionId;
 #endif
