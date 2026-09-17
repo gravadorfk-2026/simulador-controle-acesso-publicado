@@ -1,4 +1,4 @@
-import{S as t}from"./index-DDfIWZ7P.js";const e="selectionVertexShader",i=`attribute position: vec3f;
+import{S as t}from"./index-CT8NtQ1_.js";const e="selectionVertexShader",i=`attribute position: vec3f;
 #ifdef INSTANCES
 attribute instanceSelectionId: f32;
 #endif
