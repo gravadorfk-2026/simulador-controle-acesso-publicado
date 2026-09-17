@@ -1,4 +1,4 @@
-const CACHE = "simulador-controle-acesso-v0.3.1";
+const CACHE = "simulador-controle-acesso-v0.3.11";
 const ESSENTIAL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon.svg"];
 
 self.addEventListener("install", (event) => {
